@@ -1,0 +1,33 @@
+{
+  "name": "node-relay-tunnel",
+  "version": "0.1.0",
+  "description": "A live secure tunnel redirect public requests to your own local server befind a NAT or firewall",
+  "main": "index.js",
+  "dependencies": {
+    "compression": "",
+    "express": "",
+    "httpolyglot": "",
+    "request": "",
+    "socket.io": "",
+    "socket.io-client": ""
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cintolas/node-relay-tunnel.git"
+  },
+  "keywords": [
+    "ngrok",
+    "localhost",
+    "tunnel",
+    "redirect",
+    "proxy",
+    "weixin wechat",
+    "mobile testing"
+  ],
+  "author": "Peter Panayotopoulos",
+  "license": "MIT"
+}
