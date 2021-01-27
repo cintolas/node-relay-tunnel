@@ -19,6 +19,7 @@ module.exports = class Server {
     _reqId = 0;
     _clientId = 0;
     _bridgeId = 0;
+    _useArr = [];
     constructor(options = {}) {
         Object.assign(this.options, options);  
     }
@@ -27,19 +28,19 @@ module.exports = class Server {
 
         let io = socketIo(this.server);
        
-        io.use((socket, next) => {
-            //TODO match Auth headers
-            if(1) {
-                return next();
-            }
-            next(new Error('Not Authorized'));
-        });
+        let useFn;
+        while(useFn = this._useArr.shift()) {
+            io.use(useFn);
+        }
         io.on('connection', relaySocket => {
             this._setup(relaySocket);
             this._response(relaySocket);
             this._websocket(relaySocket);
         });
         return this;
+    }
+    use(fn = (socket, next) => next()) {
+        this._useArr.push(fn);
     }
     listen(port) {
         this.port = port;
