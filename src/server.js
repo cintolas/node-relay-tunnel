@@ -41,6 +41,7 @@ module.exports = class Server {
     }
     use(fn = (socket, next) => next()) {
         this._useArr.push(fn);
+        return this;
     }
     listen(port) {
         this.port = port;
