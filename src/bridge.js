@@ -8,7 +8,8 @@ module.exports = class Bridge {
         this.socket.on('connect', () => {
             this.socket.emit('bridge', {});
         });
-        this.socket.on('disconnect', () => {
+        this.socket.on('disconnect', (reason) => {
+            console.log(reason)
         });
         this.socket.on('error', console.log)
     }
@@ -19,16 +20,22 @@ module.exports = class Bridge {
             url : req.url,
             headers:req.headers,
             method : req.method,
-            form : req.body
+            body : req.body, 
+            query: req.query
         });
     }
-    onResHead(fn = () => {}) {
-        this.socket.on('resHead', fn);
+    websocket(req) {
+        this.socket.emit('websocket', {
+            _reqId : req._reqId,
+            _clientId: req._clientId,
+            url : req.url,
+            headers:req.headers,
+            method : req.method,
+            body : req.body,
+            query: req.query
+        });
     }
-    onResWrite(fn = () => {}) {
-        this.socket.on('resWrite', fn);
-    }
-    onResEnd(fn = () => {}) {
-        this.socket.on('resEnd', fn);
+    eventStream(req) {
+
     }
 }

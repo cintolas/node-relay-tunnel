@@ -1,24 +1,47 @@
 {
-  "name": "node-relay-tunnel",
-  "version": "0.1.0",
-  "description": "A live secure tunnel redirect public requests to your own local server befind a NAT or firewall",
-  "main": "index.js",
+  "_from": "git+https://github.com/cintolas/node-relay-tunnel.git",
+  "_id": "node-relay-tunnel@0.1.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/node-relay-tunnel",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "node-relay-tunnel@git+https://github.com/cintolas/node-relay-tunnel.git",
+    "name": "node-relay-tunnel",
+    "escapedName": "node-relay-tunnel",
+    "rawSpec": "git+https://github.com/cintolas/node-relay-tunnel.git",
+    "saveSpec": "git+https://github.com/cintolas/node-relay-tunnel.git",
+    "fetchSpec": "https://github.com/cintolas/node-relay-tunnel.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/cintolas/node-relay-tunnel.git#9000f96c360e118a380b58412c61eeabcb63b3b6",
+  "_spec": "node-relay-tunnel@git+https://github.com/cintolas/node-relay-tunnel.git",
+  "_where": "/home/peter/nextgen/gateway/src",
+  "author": {
+    "name": "Peter Panayotopoulos"
+  },
+  "bugs": {
+    "url": "https://github.com/cintolas/node-relay-tunnel/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "compression": "",
+    "eventsource": "",
     "express": "",
     "httpolyglot": "",
     "request": "",
     "socket.io": "",
-    "socket.io-client": ""
+    "socket.io-client": "",
+    "ws": ""
   },
+  "deprecated": false,
+  "description": "A live secure tunnel redirect public requests to your own local server befind a NAT or firewall",
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:cintolas/node-relay-tunnel.git"
-  },
+  "homepage": "https://github.com/cintolas/node-relay-tunnel#readme",
   "keywords": [
     "ngrok",
     "localhost",
@@ -28,6 +51,15 @@
     "weixin wechat",
     "mobile testing"
   ],
-  "author": "Peter Panayotopoulos",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "index.js",
+  "name": "node-relay-tunnel",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cintolas/node-relay-tunnel.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.0"
 }
