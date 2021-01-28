@@ -21,7 +21,11 @@ module.exports = class Server {
     _clientId = 0;
     _bridgeId = 0;
     _useArr = [];
-    
+    _router = (req, clientMap) => {
+        //return random client
+        let k = Array.from(clientMap.keys());
+        return clientMap.get(k[Math.floor(Math.random() * k.length)]);
+    }
     constructor(options = {}) {
         Object.assign(this.options, options);  
     }
@@ -87,12 +91,19 @@ module.exports = class Server {
         });
         relaySocket.on('meta', data => {
             let cl = this.clientMap.get(relaySocket._clientId);
-            if(!cl) 
+            if(!cl) {
+                return;
+            }
+            cl.meta = data;
+            this.clientMap.set(relaySocket._clientId, cl);
         });
         relaySocket.on('error', (e) => {
             console.log(e);
         });
 
+    }
+    setRouter(fn) {
+        this._router = fn;
     }
     middleware(req, res, next) {
         req._reqId = ++this._reqId;
@@ -308,6 +319,6 @@ module.exports = class Server {
     findServer(req) {  
         if(!this.clientMap.size)
             return {};
-        return this.clientMap.entries().next().value[1];
+        return this._router(req, this.clientMap);
     }
 }
