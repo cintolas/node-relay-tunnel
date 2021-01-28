@@ -21,6 +21,7 @@ module.exports = class Server {
     _clientId = 0;
     _bridgeId = 0;
     _useArr = [];
+    _bridgeOptions = {};
     _router = (req, clientMap) => {
         //return random client
         let k = Array.from(clientMap.keys());
@@ -28,6 +29,9 @@ module.exports = class Server {
     }
     constructor(options = {}) {
         Object.assign(this.options, options);  
+    }
+    setBridgeSocketOptions(sockOpts) {
+        this._bridgeOptions = sockOpts;
     }
     createServer(tlsConfig = {}, requestListener) {
         this.server = httpolyglot.createServer(tlsConfig, requestListener);
@@ -98,7 +102,7 @@ module.exports = class Server {
             this.clientMap.set(relaySocket._clientId, cl);
         });
         relaySocket.on('error', (e) => {
-            console.log(e);
+            console.log('error', e);
         });
 
     }
@@ -124,7 +128,7 @@ module.exports = class Server {
                 delete req.headers[header];
             }
         }
-        let b = new Bridge(this.port);
+        let b = new Bridge(this.port, this._bridgeOptions);
         this.responseMap.set(req._reqId, {
             res: res,
             next: next
@@ -198,7 +202,7 @@ module.exports = class Server {
                 _reqId: ++this._reqId,
             };
             req._clientId = this.findServer(req)._clientId;
-            let b = new Bridge(this.port);
+            let b = new Bridge(this.port, this._bridgeOptions);
             ws.on('message', m => {
                 let client = this.clientMap.get(req._clientId);
                 if(!client) {

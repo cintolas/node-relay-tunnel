@@ -1,10 +1,10 @@
 const socketClient = require('socket.io-client');
 
 module.exports = class Bridge {
-    constructor(port) {
+    constructor(port, opts = {}) {
         let url  = ['ws://localhost:', port].join('');
 
-        this.socket = socketClient(url);
+        this.socket = socketClient(url, opts);
         this.socket.on('connect', () => {
             this.socket.emit('bridge', {});
         });
