@@ -16,10 +16,12 @@ module.exports = class Server {
     wsMap = new Map();
     clientMap = new Map();
     bridgeMap = new Map();
+    relaySocketMap = new Map();
     _reqId = 0;
     _clientId = 0;
     _bridgeId = 0;
     _useArr = [];
+    
     constructor(options = {}) {
         Object.assign(this.options, options);  
     }
@@ -83,7 +85,10 @@ module.exports = class Server {
                     break;
             }
         });
-
+        relaySocket.on('meta', data => {
+            let cl = this.clientMap.get(relaySocket._clientId);
+            if(!cl) 
+        });
         relaySocket.on('error', (e) => {
             console.log(e);
         });

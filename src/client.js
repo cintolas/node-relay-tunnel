@@ -24,10 +24,13 @@ module.exports = class Client {
         let relayUrl = ['ws', u.protocol.startsWith('https') ? 's' :'', '://', u.host ].join('');
 
         socketOptions.rejectUnauthorized = false;
-        let relaySocket = socketClient(relayUrl, socketOptions);
-        this._general(relaySocket);
-        this._websocket(relaySocket);
-        this._request(relaySocket);
+        this.relaySocket = socketClient(relayUrl, socketOptions);
+        this._general(this.relaySocket);
+        this._websocket(this.relaySocket);
+        this._request(this.relaySocket);
+    }
+    meta(data) {
+        this.relaySocket.emit('meta', data);
     }
     _general(relaySocket) {
         relaySocket.on('connect', () => {
