@@ -109,19 +109,11 @@ module.exports = class Server {
     setRouter(fn) {
         this._router = fn;
     }
-    middleware(req, res, next) {
+    async middleware(req, res, next) {
         req._reqId = ++this._reqId;
-        req._clientId = this.findServer(req)._clientId;
 
-
-        if(!req._clientId) {
-            res.status(500);
-            res.write('Server not connected');
-            res.end();
-            return;
-        }
-        // check lowercase headers(e.g parsed by express), use raw headers
-        for(let i in req.rawHeaders) {
+         // check lowercase headers(e.g parsed by express), use raw headers
+         for(let i in req.rawHeaders) {
             var header = req.rawHeaders[i].toLowerCase();
             if(header != req.rawHeaders[i] && req.headers[header]) {
                 req.headers[req.rawHeaders[i]] = req.headers[header];
@@ -129,25 +121,51 @@ module.exports = class Server {
             }
         }
         let b = new Bridge(this.port, this._bridgeOptions);
+
         this.responseMap.set(req._reqId, {
             res: res,
             next: next
         });
-        // pass the req main content to local server via WS
-        
         if(!req.body && req.method !== 'GET') {
             var body = '';
             req.on('data', (chunk) => {
                 body += chunk;
                 //TODO: should set a limit for data
             })
-            req.on('end', () => {
+            req.on('end', async() => {
                 req.body = body;
+                try {
+                    req._clientId = await this.findServer(req)._clientId;
+                    if(!req._clientId) {
+                        throw new Error('ClientId missing')
+                    }
+                } catch(e) {
+                    this.responseMap.delete(req._reqId);
+                    next(e);
+                    
+                    return;
+                }
+              
+                if(!req._clientId) {
+                    this.responseMap.delete(req._reqId);
+                    next(new Error('cannot find client to connect to'));
+                    return;
+                }
                 b.request(req);
             });
         } else {
+            try {
+                req._clientId = await this.findServer(req)._clientId;
+                if(!req._clientId) {
+                    throw new Error('ClientId Missing')
+                }
+            } catch(e) {
+                this.responseMap.delete(req._reqId);
+                next(e);
+                return;
+            }
             b.request(req);
-        }
+        }      
     }
     _response(relaySocket) {
         // handle req from server, relay data to client
@@ -197,11 +215,10 @@ module.exports = class Server {
         const wss = new WebSocket.Server({ noServer: true });
        
         wss.on('connection', (ws, request) => {
-            let req = {
-                url: request.url,
-                _reqId: ++this._reqId,
-            };
+            let req = request;
+            req._reqId = ++this._reqId,
             req._clientId = this.findServer(req)._clientId;
+
             let b = new Bridge(this.port, this._bridgeOptions);
             ws.on('message', m => {
                 let client = this.clientMap.get(req._clientId);
