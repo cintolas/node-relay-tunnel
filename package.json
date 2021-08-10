@@ -1,6 +1,6 @@
 {
   "_from": "git+https://github.com/cintolas/node-relay-tunnel.git",
-  "_id": "node-relay-tunnel@0.1.0",
+  "_id": "node-relay-tunnel@0.3.0",
   "_inBundle": false,
   "_integrity": "",
   "_location": "/node-relay-tunnel",
@@ -61,5 +61,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.1.0"
+  "version": "0.3.0"
 }
