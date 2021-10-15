@@ -34,8 +34,8 @@
     "express": "",
     "httpolyglot": "",
     "request": "",
-    "socket.io": "",
-    "socket.io-client": "",
+    "socket.io": "3.1.2",
+    "socket.io-client": "3.1.2",
     "ws": ""
   },
   "deprecated": false,
